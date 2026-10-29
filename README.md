@@ -4,6 +4,12 @@ Cameron Batts
 
 A Streamlit playlist explorer that groups songs into Chill, Hype and Mixed playlists, supports search and lucky picks, and summarizes the collection.
 
+## Live demo
+
+[Try Playlist Chaos](https://ai110-module1tinker-playlistchaos-starter-fm7cwflm7kwjbppnfw26.streamlit.app/)
+
+Explore the playlists, add songs and try lucky picks in your browser. Changes and pick history are temporary and belong to your current session.
+
 ## Classification
 
 Energy uses a 1–10 scale in the interface. With the default profile:
