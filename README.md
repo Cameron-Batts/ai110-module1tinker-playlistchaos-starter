@@ -1,113 +1,63 @@
 # Playlist Chaos
 
-Your AI assistant tried to build a smart playlist generator. The app runs, but some of the behavior is unpredictable. Your task is to explore the app, investigate the code, and use an AI assistant to debug and improve it.
+Cameron Batts
 
-This activity is your first chance to practice AI-assisted debugging on a codebase that is slightly messy, slightly mysterious, and intentionally imperfect.
+A Streamlit playlist explorer that groups songs into Chill, Hype and Mixed playlists, supports search and lucky picks, and summarizes the collection.
 
-You do not need to understand everything at once. Approach the app as a curious investigator, work with an AI assistant to explain what you find, and make targeted improvements.
+## Classification
 
----
+Energy uses a 1–10 scale in the interface. With the default profile:
 
-## How the code is organized
+- Chill: energy at most 3, or a title containing lofi, ambient or sleep, ignoring case.
+- Hype: energy at least 7, a favorite-genre match, or a hype genre keyword.
+- Mixed: songs matching neither rule.
 
-### `app.py`  
+Chill is evaluated first when signals overlap. Profile sliders customize the energy thresholds.
 
-The Streamlit user interface. It handles things like:
+## Fixes and behavior
 
-- Showing and updating the mood profile  
-- Adding songs  
-- Displaying playlists  
-- Lucky pick  
-- Stats and history
+- Low-energy and explicitly chill-titled songs keep their Chill classification when another signal suggests Hype.
+- Chill title keywords match regardless of capitalization.
+- Hype ratio uses the entire collection as its denominator.
+- Average energy includes every playlist.
+- Merging playlists creates independent list containers and leaves both inputs unchanged. Song dictionaries remain shared.
+- Empty lucky-pick selections return None and use the interface's existing no-songs warning.
+- The any pick mode includes Hype, Chill and Mixed songs.
 
-### `playlist_logic.py`  
+## Run
 
-The logic behind the app, including:
+Use Python 3.10 or newer from the repository root:
 
-- Normalizing and classifying songs  
-- Building playlists  
-- Merging playlist data  
-- Searching  
-- Computing statistics  
-- Lucky pick mechanics
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+streamlit run app.py
+```
 
-You will need to look at both files to understand how the app behaves.
+## Regression tests
 
----
+The tests use Python's standard library:
 
-## What you will do
+```bash
+python3 -m unittest discover -s tests -v
+```
 
-### 1. Explore the app  
+Verified result:
 
-Run the app and try things out:
+```text
+Ran 15 tests
+OK
+```
 
-- Add several songs with different titles, artists, genres, and energy levels  
-- Change the mood profile  
-- Use the search box  
-- Try the lucky pick  
-- Inspect the playlist tabs and stats  
-- Look at the history  
+Before the fixes, this same suite reported six failures and two errors. Coverage includes overlapping classification rules, threshold boundaries, normalization, collection statistics, list aliasing, empty selections, selection modes and search.
 
-As you explore, write down at least five things that feel confusing, inconsistent, or strange. These might be bugs, quirks, or unexpected design decisions.
+Verification covers the Python logic. The Streamlit interface still needs an interactive check after the update.
 
-### 2. Ask AI for help understanding the code  
+## Organization
 
-Pick one issue from your list. Use an AI coding assistant to:
+- app.py: Streamlit interface.
+- playlist_logic.py: classification, collection statistics, merge, search and selection functions.
+- tests/test_playlist_logic.py: regression cases.
 
-- Explain the relevant code sections  
-- Walk through what the code is supposed to do  
-- Suggest reasons the behavior might not match expectations  
-
-For example:
-
-> "Here is the function that classifies songs. The app is mislabeling some songs. Help me understand what the function is doing and where the logic might need adjustment."
-
-Before making changes, summarize in your own words what you think is happening.
-
-### 3. Fix at least four issues  
-
-Make improvements based on your investigation.
-
-For each fix:
-
-- Identify the source of the issue  
-- Decide whether to accept or adjust the AI assistant's suggestions  
-- Update the code  
-- Add a short comment describing the fix  
-
-Your fixes may involve logic, calculations, search behavior, playlist grouping, lucky pick behavior, or anything else you discover.
-
-### 4. Test your changes  
-
-After each fix, try interacting with the app again:
-
-- Add new songs  
-- Change the profile  
-- Try search and stats  
-- Check whether playlists behave more consistently  
-
-Confirm that the behavior matches your expectations.
-
-### 5. Optional stretch goals  
-
-If you finish early or want an extra challenge, try one of these:
-
-- Improve search behavior  
-- Add a "Recently added" view  
-- Add sorting controls  
-- Improve how Mixed songs are handled  
-- Add new features to the history view  
-- Introduce better error handling for empty playlists  
-- Add a new playlist category of your own design  
-
----
-
-## Tips for success
-
-- You do not need to solve everything. Focus on exploring and learning.  
-- When confused, ask an AI assistant to explain the code or summarize behavior.  
-- Test the app often. Small experiments reveal useful clues.  
-- Treat surprising behavior as something worth investigating.  
-- Stay curious. The unpredictability is intentional and part of the experience.
-
-When you finish, Playlist Chaos will feel more predictable, and you will have taken your first steps into AI-assisted debugging.
+The original starter's provenance remains available through this repository's GitHub fork lineage.
