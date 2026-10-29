@@ -248,11 +248,13 @@ def add_song_sidebar():
             "energy": energy,
             "tags": tags,
         }
-        if title and artist:
+        if title.strip() and artist.strip():
             normalized = normalize_song(song)
             all_songs = st.session_state.songs[:]
             all_songs.append(normalized)
             st.session_state.songs = all_songs
+        else:
+            st.sidebar.warning("Enter both a title and an artist.")
 
 
 def playlist_tabs(playlists):
@@ -379,8 +381,8 @@ def main():
     st.title("Playlist Chaos")
 
     st.write(
-        "An AI assistant tried to build a smart playlist engine. "
-        "The code runs, but the behavior is a bit unpredictable."
+        "Explore explained playlist rules, search your collection, "
+        "and use lucky picks with collection statistics."
     )
 
     init_state()
@@ -405,3 +407,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
